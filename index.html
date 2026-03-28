@@ -6,7 +6,6 @@
 <title>Seasons Map</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
-
   body {
     background: #f9f7f2;
     display: flex;
@@ -15,14 +14,10 @@
     min-height: 100vh;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
-
   svg { width: min(680px, 100vw); height: auto; }
-
-  /* Opacity-based hover on the fill paths */
   .wedge { cursor: pointer; }
   .wedge .bg { transition: opacity 0.15s; }
   .wedge:hover .bg { opacity: 1 !important; }
-
   .center-btn { cursor: pointer; }
   .center-btn:hover .cfill { opacity: 0.8; }
 
@@ -36,7 +31,6 @@
     justify-content: center;
   }
   .overlay.active { display: flex; }
-
   .popup {
     background: #fff;
     border-radius: 16px;
@@ -69,116 +63,47 @@
 </head>
 <body>
 
-<!--
-  cx=340 cy=340, r_center=62, r_mid=140, r_outer=220
-
-  Key points:
-    Dividers at 270° (up), 30° (lower-right), 150° (lower-left)
-
-    r_outer=220:  top=(340,120), lr=(530.5,450), ll=(149.5,450)
-    r_mid=140:    top=(340,200), lr=(461.2,410), ll=(218.8,410)
-    r_center=62:  top=(340,278), lr=(393.7,371), ll=(286.3,371)
-
-  BODY ANNULUS (Summer sector, 30°→150° going clockwise through bottom):
-    The inner arc from lr_c (393.7,371) to ll_c (286.3,371) going CLOCKWISE
-    through the bottom of the center circle is a MINOR arc (120° sweep).
-    sweep-flag=1 (CW), large-arc-flag=0
-    → A 62,62 0 0,1 286.3,371
-
-    The outer arc from ll_m (218.8,410) to lr_m (461.2,410) going COUNTER-CLOCKWISE
-    back is also a MINOR arc (120° sweep).
-    sweep-flag=0 (CCW), large-arc-flag=0
-    → A 140,140 0 0,0 461.2,410
-
-    Full path:
-    M 393.7,371
-    A 62,62 0 0,1 286.3,371
-    L 218.8,410
-    A 140,140 0 0,0 461.2,410
-    Z
-
-  MIND ANNULUS (Spring sector, 270°→30° going CW through right/top):
-    inner arc: top_c (340,278) → lr_c (393.7,371), CW minor arc (120°)
-    → A 62,62 0 0,1 393.7,371
-    outer arc: lr_m (461.2,410) → top_m (340,200), CCW minor arc (120°)
-    → A 140,140 0 0,0 340,200
-
-    Full path:
-    M 340,278
-    A 62,62 0 0,1 393.7,371
-    L 461.2,410
-    A 140,140 0 0,0 340,200
-    Z
-
-  HEART ANNULUS (Autumn sector, 150°→270° going CW through left):
-    inner arc: ll_c (286.3,371) → top_c (340,278), CW minor arc (120°)
-    → A 62,62 0 0,1 340,278
-    outer arc: top_m (340,200) → ll_m (218.8,410), CCW minor arc (120°)
-    → A 140,140 0 0,0 218.8,410
-
-    Full path:
-    M 286.3,371
-    A 62,62 0 0,1 340,278
-    L 340,200
-    A 140,140 0 0,0 218.8,410
-    Z
--->
-
 <svg viewBox="0 0 680 660" xmlns="http://www.w3.org/2000/svg"
      style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
 
   <!-- OUTER SEASON WEDGES -->
   <g class="wedge" onclick="openPopup('spring')">
-    <path class="bg" d="M340,340 L340,120 A220,220 0 0,1 530.5,450 Z"
-          fill="#c6e8b0" opacity="0.55"/>
+    <path class="bg" d="M340,340 L340,120 A220,220 0 0,1 530.5,450 Z" fill="#c6e8b0" opacity="0.55"/>
   </g>
   <g class="wedge" onclick="openPopup('summer')">
-    <path class="bg" d="M340,340 L530.5,450 A220,220 0 0,1 149.5,450 Z"
-          fill="#f5d98a" opacity="0.5"/>
+    <path class="bg" d="M340,340 L530.5,450 A220,220 0 0,1 149.5,450 Z" fill="#f5d98a" opacity="0.5"/>
   </g>
   <g class="wedge" onclick="openPopup('autumn')">
-    <path class="bg" d="M340,340 L149.5,450 A220,220 0 0,1 340,120 Z"
-          fill="#f0b89a" opacity="0.5"/>
+    <path class="bg" d="M340,340 L149.5,450 A220,220 0 0,1 340,120 Z" fill="#f0b89a" opacity="0.5"/>
   </g>
 
   <circle cx="340" cy="340" r="220" fill="none" stroke="#c8c6be" stroke-width="0.8"/>
 
-  <!-- MID RING base fills (softer) -->
+  <!-- MID RING base fills -->
   <path d="M340,340 L340,200 A140,140 0 0,1 461.2,410 Z" fill="#EAF3DE" opacity="0.55"/>
   <path d="M340,340 L461.2,410 A140,140 0 0,1 218.8,410 Z" fill="#FAEEDA" opacity="0.5"/>
   <path d="M340,340 L218.8,410 A140,140 0 0,1 340,200 Z" fill="#FAECE7" opacity="0.5"/>
 
-  <!-- PILLAR ANNULUS WEDGES (hover highlight) -->
-  <!-- Mind (Spring sector) -->
+  <!-- PILLAR WEDGES -->
   <g class="wedge" onclick="openPopup('mind')">
-    <path class="bg"
-          d="M340,278 A62,62 0 0,1 393.7,371 L461.2,410 A140,140 0 0,0 340,200 Z"
-          fill="#a8d870" opacity="0"/>
+    <path class="bg" d="M340,278 A62,62 0 0,1 393.7,371 L461.2,410 A140,140 0 0,0 340,200 Z" fill="#a8d870" opacity="0"/>
   </g>
-  <!-- Body (Summer sector) — fixed arc directions -->
   <g class="wedge" onclick="openPopup('body')">
-    <path class="bg"
-          d="M393.7,371 A62,62 0 0,1 286.3,371 L218.8,410 A140,140 0 0,0 461.2,410 Z"
-          fill="#f0c850" opacity="0"/>
+    <path class="bg" d="M393.7,371 A62,62 0 0,1 286.3,371 L218.8,410 A140,140 0 0,0 461.2,410 Z" fill="#f0c850" opacity="0"/>
   </g>
-  <!-- Heart (Autumn sector) -->
   <g class="wedge" onclick="openPopup('heart')">
-    <path class="bg"
-          d="M286.3,371 A62,62 0 0,1 340,278 L340,200 A140,140 0 0,0 218.8,410 Z"
-          fill="#e89878" opacity="0"/>
+    <path class="bg" d="M286.3,371 A62,62 0 0,1 340,278 L340,200 A140,140 0 0,0 218.8,410 Z" fill="#e89878" opacity="0"/>
   </g>
 
   <circle cx="340" cy="340" r="140" fill="none" stroke="#c8c6be" stroke-width="0.8"/>
 
-  <!-- Dividers (center edge → outer edge) -->
+  <!-- Dividers -->
   <line x1="340"   y1="278" x2="340"   y2="120" stroke="#c8c6be" stroke-width="0.8"/>
   <line x1="393.7" y1="371" x2="530.5" y2="450" stroke="#c8c6be" stroke-width="0.8"/>
   <line x1="286.3" y1="371" x2="149.5" y2="450" stroke="#c8c6be" stroke-width="0.8"/>
 
   <!-- Blue center -->
   <circle cx="340" cy="340" r="62" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.8"/>
-
-  <!-- CENTER clickable -->
   <g class="center-btn" onclick="openPopup('spirituality')">
     <circle class="cfill" cx="340" cy="340" r="62" fill="transparent"/>
     <text font-size="12" font-weight="600" fill="#1e3a5f"
@@ -186,14 +111,14 @@
   </g>
 
   <!-- RING LABELS -->
-  <text font-size="10" font-weight="600" fill="#3b82f6" letter-spacing="0.05em"
+  <text font-size="10" font-weight="600" fill="#3b82f6"
         x="340" y="296" text-anchor="middle" style="pointer-events:none">I</text>
-  <text font-size="10" font-weight="500" fill="#888680" letter-spacing="0.05em"
+  <text font-size="10" font-weight="500" fill="#888680"
         x="340" y="212" text-anchor="middle" style="pointer-events:none">me</text>
-  <text font-size="10" font-weight="500" fill="#888680" letter-spacing="0.05em"
-        x="340" y="134" text-anchor="middle" style="pointer-events:none">process</text>
+  <text font-size="10" font-weight="500" fill="#888680"
+        x="340" y="134" text-anchor="middle" style="pointer-events:none">growth</text>
 
-  <!-- PILLAR LABELS (pointer-events:none) -->
+  <!-- PILLAR LABELS -->
   <text font-size="15" x="431" y="263" text-anchor="middle" style="pointer-events:none">🧠</text>
   <text font-size="12" font-weight="600" fill="#3B6D11" x="431" y="280" text-anchor="middle" style="pointer-events:none">Mind</text>
   <text font-size="10" font-weight="500" fill="#6b9e3a" x="431" y="293" text-anchor="middle" style="pointer-events:none">daily</text>

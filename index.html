@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Seasons Map</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f9f7f2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  }
+  svg {
+    width: min(680px, 100vw);
+    height: auto;
+  }
+  .s-label { font-size: 13px; font-weight: 600; }
+  .s-sub   { font-size: 11px; font-weight: 400; fill: #6b6860; }
+  .p-label { font-size: 12px; font-weight: 600; }
+  .p-sub   { font-size: 10px; font-weight: 400; fill: #6b6860; }
+  .c-label { font-size: 13px; font-weight: 600; fill: #1a1a18; }
+  .c-sub   { font-size: 10px; font-weight: 400; fill: #6b6860; }
+</style>
+</head>
+<body>
+<svg viewBox="0 0 680 700" xmlns="http://www.w3.org/2000/svg">
+
+  <!-- Sector fills -->
+  <path d="M340 350 L340 90 A260 260 0 0 1 565 480 Z" fill="#EAF3DE" opacity="0.65"/>
+  <path d="M340 350 L565 480 A260 260 0 0 1 115 480 Z" fill="#FAEEDA" opacity="0.6"/>
+  <path d="M340 350 L115 480 A260 260 0 0 1 340 90 Z" fill="#FAECE7" opacity="0.6"/>
+
+  <!-- Rings -->
+  <circle cx="340" cy="350" r="260" fill="none" stroke="#c8c6be" stroke-width="0.8"/>
+  <circle cx="340" cy="350" r="140" fill="none" stroke="#c8c6be" stroke-width="0.8"/>
+  <circle cx="340" cy="350" r="78"  fill="#f9f7f2" stroke="#c8c6be" stroke-width="0.8"/>
+
+  <!-- Dividers -->
+  <line x1="340" y1="350" x2="340"  y2="90"  stroke="#c8c6be" stroke-width="0.8"/>
+  <line x1="340" y1="350" x2="565"  y2="480" stroke="#c8c6be" stroke-width="0.8"/>
+  <line x1="340" y1="350" x2="115"  y2="480" stroke="#c8c6be" stroke-width="0.8"/>
+
+  <!-- CENTER -->
+  <text class="c-label" x="340" y="338" text-anchor="middle">Spirituality</text>
+  <text class="c-sub"   x="340" y="354" text-anchor="middle">"I" having to play</text>
+  <text class="c-sub"   x="340" y="368" text-anchor="middle">with no rules</text>
+
+  <!-- INNER: Mind (Spring sector, top-right) -->
+  <text class="p-label" x="420" y="288" text-anchor="middle" fill="#3B6D11">Mind</text>
+  <text class="p-sub"   x="420" y="302" text-anchor="middle">identity, costume</text>
+  <text class="p-sub"   x="420" y="314" text-anchor="middle">heuristic joy</text>
+
+  <!-- INNER: Body (Summer sector, bottom) -->
+  <text class="p-label" x="340" y="448" text-anchor="middle" fill="#BA7517">Body</text>
+  <text class="p-sub"   x="340" y="462" text-anchor="middle">seek state change</text>
+  <text class="p-sub"   x="340" y="474" text-anchor="middle">not "getting through"</text>
+
+  <!-- INNER: Heart (Autumn sector, top-left) -->
+  <text class="p-label" x="260" y="288" text-anchor="middle" fill="#993C1D">Heart</text>
+  <text class="p-sub"   x="260" y="302" text-anchor="middle">love before deserved</text>
+  <text class="p-sub"   x="260" y="314" text-anchor="middle">strip conditions</text>
+
+  <!-- OUTER: Spring -->
+  <text class="s-label" x="500" y="168" text-anchor="middle" fill="#3B6D11">🌱 Spring</text>
+  <text class="s-sub"   x="500" y="185" text-anchor="middle">process: self-definition</text>
+  <text class="s-sub"   x="500" y="200" text-anchor="middle">no fixed "me" = anything possible</text>
+  <text class="s-sub"   x="500" y="215" text-anchor="middle">log of who you are now</text>
+  <text class="s-sub"   x="500" y="230" text-anchor="middle">choose the next costume</text>
+
+  <!-- OUTER: Summer -->
+  <text class="s-label" x="340" y="548" text-anchor="middle" fill="#BA7517">☀️ Summer</text>
+  <text class="s-sub"   x="340" y="565" text-anchor="middle">process: embodied play</text>
+  <text class="s-sub"   x="340" y="580" text-anchor="middle">work as a game, tight loops</text>
+  <text class="s-sub"   x="340" y="595" text-anchor="middle">nowhere to get to — just dance</text>
+
+  <!-- OUTER: Autumn -->
+  <text class="s-label" x="182" y="168" text-anchor="middle" fill="#993C1D">🍁 Autumn</text>
+  <text class="s-sub"   x="182" y="185" text-anchor="middle">process: revelation</text>
+  <text class="s-sub"   x="182" y="200" text-anchor="middle">strip "me," find "I"</text>
+  <text class="s-sub"   x="182" y="215" text-anchor="middle">purge conditions for peace</text>
+  <text class="s-sub"   x="182" y="230" text-anchor="middle">what remains is powerful</text>
+
+</svg>
+</body>
+</html>

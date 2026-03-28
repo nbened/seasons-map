@@ -6,6 +6,7 @@
 <title>Seasons Map</title>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
+
   body {
     background: #f9f7f2;
     display: flex;
@@ -14,19 +15,77 @@
     min-height: 100vh;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
+
   svg {
     width: min(680px, 100vw);
     height: auto;
+    cursor: default;
   }
+
   .s-label { font-size: 13px; font-weight: 600; }
   .s-sub   { font-size: 11px; font-weight: 400; fill: #6b6860; }
   .p-label { font-size: 12px; font-weight: 600; }
   .p-sub   { font-size: 10px; font-weight: 400; fill: #6b6860; }
   .c-label { font-size: 13px; font-weight: 600; fill: #1a1a18; }
   .c-sub   { font-size: 10px; font-weight: 400; fill: #6b6860; }
+
+  .clickable { cursor: pointer; transition: opacity 0.15s; }
+  .clickable:hover { opacity: 0.7; }
+
+  .overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.22);
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+  }
+  .overlay.active { display: flex; }
+
+  .popup {
+    background: #fff;
+    border-radius: 18px;
+    padding: 32px 36px 28px;
+    max-width: 380px;
+    width: 90%;
+    box-shadow: 0 12px 48px rgba(0,0,0,0.14);
+    position: relative;
+  }
+
+  .popup-emoji  { font-size: 26px; display: block; margin-bottom: 10px; }
+  .popup-title  { font-size: 21px; font-weight: 700; color: #1a1a18; margin-bottom: 3px; }
+  .popup-sub    { font-size: 11px; font-weight: 500; color: #a09e98; text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 16px; }
+  .popup-body   { font-size: 14px; color: #3d3d3a; line-height: 1.68; margin-bottom: 24px; }
+  .popup-body p + p { margin-top: 9px; }
+
+  .notion-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: #1a1a18;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 10px 18px;
+    border-radius: 9px;
+    text-decoration: none;
+    transition: background 0.15s;
+  }
+  .notion-btn:hover { background: #444; }
+
+  .close-btn {
+    position: absolute;
+    top: 14px; right: 16px;
+    background: none; border: none;
+    font-size: 19px; color: #b0ada8;
+    cursor: pointer; line-height: 1; padding: 4px;
+  }
+  .close-btn:hover { color: #1a1a18; }
 </style>
 </head>
 <body>
+
 <svg viewBox="0 0 680 700" xmlns="http://www.w3.org/2000/svg">
 
   <!-- Sector fills -->
@@ -45,45 +104,149 @@
   <line x1="340" y1="350" x2="115"  y2="480" stroke="#c8c6be" stroke-width="0.8"/>
 
   <!-- CENTER -->
-  <text class="c-label" x="340" y="338" text-anchor="middle">Spirituality</text>
-  <text class="c-sub"   x="340" y="354" text-anchor="middle">"I" having to play</text>
-  <text class="c-sub"   x="340" y="368" text-anchor="middle">with no rules</text>
+  <g class="clickable" onclick="openPopup('spirituality')">
+    <circle cx="340" cy="350" r="78" fill="transparent"/>
+    <text class="c-label" x="340" y="338" text-anchor="middle">Spirituality</text>
+    <text class="c-sub"   x="340" y="354" text-anchor="middle">"I" having to play</text>
+    <text class="c-sub"   x="340" y="368" text-anchor="middle">with no rules</text>
+  </g>
 
-  <!-- INNER: Mind (Spring sector, top-right) -->
-  <text class="p-label" x="420" y="288" text-anchor="middle" fill="#3B6D11">Mind</text>
-  <text class="p-sub"   x="420" y="302" text-anchor="middle">identity, costume</text>
-  <text class="p-sub"   x="420" y="314" text-anchor="middle">heuristic joy</text>
+  <!-- INNER: Mind -->
+  <g class="clickable" onclick="openPopup('mind')">
+    <text class="p-label" x="420" y="288" text-anchor="middle" fill="#3B6D11">Mind</text>
+    <text class="p-sub"   x="420" y="302" text-anchor="middle">identity, costume</text>
+    <text class="p-sub"   x="420" y="314" text-anchor="middle">heuristic joy</text>
+  </g>
 
-  <!-- INNER: Body (Summer sector, bottom) -->
-  <text class="p-label" x="340" y="448" text-anchor="middle" fill="#BA7517">Body</text>
-  <text class="p-sub"   x="340" y="462" text-anchor="middle">seek state change</text>
-  <text class="p-sub"   x="340" y="474" text-anchor="middle">not "getting through"</text>
+  <!-- INNER: Body -->
+  <g class="clickable" onclick="openPopup('body')">
+    <text class="p-label" x="340" y="448" text-anchor="middle" fill="#BA7517">Body</text>
+    <text class="p-sub"   x="340" y="462" text-anchor="middle">seek state change</text>
+    <text class="p-sub"   x="340" y="474" text-anchor="middle">not "getting through"</text>
+  </g>
 
-  <!-- INNER: Heart (Autumn sector, top-left) -->
-  <text class="p-label" x="260" y="288" text-anchor="middle" fill="#993C1D">Heart</text>
-  <text class="p-sub"   x="260" y="302" text-anchor="middle">love before deserved</text>
-  <text class="p-sub"   x="260" y="314" text-anchor="middle">strip conditions</text>
+  <!-- INNER: Heart -->
+  <g class="clickable" onclick="openPopup('heart')">
+    <text class="p-label" x="260" y="288" text-anchor="middle" fill="#993C1D">Heart</text>
+    <text class="p-sub"   x="260" y="302" text-anchor="middle">love before deserved</text>
+    <text class="p-sub"   x="260" y="314" text-anchor="middle">strip conditions</text>
+  </g>
 
   <!-- OUTER: Spring -->
-  <text class="s-label" x="500" y="168" text-anchor="middle" fill="#3B6D11">🌱 Spring</text>
-  <text class="s-sub"   x="500" y="185" text-anchor="middle">process: self-definition</text>
-  <text class="s-sub"   x="500" y="200" text-anchor="middle">no fixed "me" = anything possible</text>
-  <text class="s-sub"   x="500" y="215" text-anchor="middle">log of who you are now</text>
-  <text class="s-sub"   x="500" y="230" text-anchor="middle">choose the next costume</text>
+  <g class="clickable" onclick="openPopup('spring')">
+    <text class="s-label" x="500" y="168" text-anchor="middle" fill="#3B6D11">🌱 Spring</text>
+    <text class="s-sub"   x="500" y="185" text-anchor="middle">process: self-definition</text>
+    <text class="s-sub"   x="500" y="200" text-anchor="middle">no fixed "me" = anything possible</text>
+    <text class="s-sub"   x="500" y="215" text-anchor="middle">log of who you are now</text>
+    <text class="s-sub"   x="500" y="230" text-anchor="middle">choose the next costume</text>
+  </g>
 
   <!-- OUTER: Summer -->
-  <text class="s-label" x="340" y="548" text-anchor="middle" fill="#BA7517">☀️ Summer</text>
-  <text class="s-sub"   x="340" y="565" text-anchor="middle">process: embodied play</text>
-  <text class="s-sub"   x="340" y="580" text-anchor="middle">work as a game, tight loops</text>
-  <text class="s-sub"   x="340" y="595" text-anchor="middle">nowhere to get to — just dance</text>
+  <g class="clickable" onclick="openPopup('summer')">
+    <text class="s-label" x="340" y="548" text-anchor="middle" fill="#BA7517">☀️ Summer</text>
+    <text class="s-sub"   x="340" y="565" text-anchor="middle">process: embodied play</text>
+    <text class="s-sub"   x="340" y="580" text-anchor="middle">work as a game, tight loops</text>
+    <text class="s-sub"   x="340" y="595" text-anchor="middle">nowhere to get to — just dance</text>
+  </g>
 
   <!-- OUTER: Autumn -->
-  <text class="s-label" x="182" y="168" text-anchor="middle" fill="#993C1D">🍁 Autumn</text>
-  <text class="s-sub"   x="182" y="185" text-anchor="middle">process: revelation</text>
-  <text class="s-sub"   x="182" y="200" text-anchor="middle">strip "me," find "I"</text>
-  <text class="s-sub"   x="182" y="215" text-anchor="middle">purge conditions for peace</text>
-  <text class="s-sub"   x="182" y="230" text-anchor="middle">what remains is powerful</text>
+  <g class="clickable" onclick="openPopup('autumn')">
+    <text class="s-label" x="182" y="168" text-anchor="middle" fill="#993C1D">🍁 Autumn</text>
+    <text class="s-sub"   x="182" y="185" text-anchor="middle">process: revelation</text>
+    <text class="s-sub"   x="182" y="200" text-anchor="middle">strip "me," find "I"</text>
+    <text class="s-sub"   x="182" y="215" text-anchor="middle">purge conditions for peace</text>
+    <text class="s-sub"   x="182" y="230" text-anchor="middle">what remains is powerful</text>
+  </g>
 
 </svg>
+
+<!-- Popup -->
+<div class="overlay" id="overlay" onclick="overlayClick(event)">
+  <div class="popup">
+    <button class="close-btn" onclick="closePopup()">✕</button>
+    <span class="popup-emoji" id="p-emoji"></span>
+    <div class="popup-title" id="p-title"></div>
+    <div class="popup-sub"   id="p-sub"></div>
+    <div class="popup-body"  id="p-body"></div>
+    <a class="notion-btn" id="p-link" href="#" target="_blank">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M4.459 4.208c.746.606 1.026.56 2.428.466l13.215-.793c.28 0 .047-.28-.046-.326L17.86 1.968c-.42-.326-.981-.7-2.055-.607L3.01 2.295c-.466.046-.56.28-.374.466zm.793 3.08v13.904c0 .747.373 1.027 1.214.98l14.523-.84c.841-.046.935-.56.935-1.167V6.354c0-.606-.233-.933-.748-.887l-15.177.887c-.56.047-.747.327-.747.933zm14.337.745c.093.42 0 .84-.42.888l-.7.14v10.264c-.608.327-1.168.514-1.635.514-.748 0-.935-.234-1.495-.933l-4.577-7.186v6.952L12.21 19s0 .84-1.168.84l-3.222.186c-.093-.186 0-.653.327-.746l.84-.233V9.854L7.822 9.76c-.094-.42.14-1.026.793-1.073l3.456-.233 4.764 7.279V9.01l-1.215-.14c-.093-.514.28-.887.747-.933z"/></svg>
+      Open in Notion
+    </a>
+  </div>
+</div>
+
+<script>
+const data = {
+  spirituality: {
+    emoji: '✦',
+    title: 'Spirituality',
+    sub: 'the center',
+    body: `<p>The absurdity of "I" having to play at all — with no rules, no fixed truth, no real self to protect.</p><p>The humor in that is the foundation. Everything else — Heart, Mind, Body — is "me" playing dress-up. Spirituality is "I" watching, unbothered, finding it all kind of funny.</p><p>Seek state change, not milestones. The world is rich. Active, not passive.</p>`,
+    link: 'https://www.notion.so/Winter-SOT-303d81dbbe8380f1a2b5f1258c2c0c08'
+  },
+  mind: {
+    emoji: '🧠',
+    title: 'Mind',
+    sub: 'inner pillar · developed by Spring',
+    body: `<p>Joy of youth, wander, heuristic. The mind's ceiling is raised by Spring — choosing new costumes, new frames, new stories to inhabit.</p><p>Mind is not about finding truth. It's about holding loosely, wandering freely, and shooting at goals you find interesting right now.</p>`,
+    link: 'https://www.notion.so/303d81dbbe8380bdb9a8c1505fe90c1c'
+  },
+  body: {
+    emoji: '⚡',
+    title: 'Body',
+    sub: 'inner pillar · developed by Summer',
+    body: `<p>The body is not something to get through. It's something to experience — actively, in stages, seeking state transitions.</p><p>The difference between someone good and a champion: one tries to get through to an end, the champion monitors and extracts what's still left to give.</p><p>Nowhere to get to. Just a practice in being within your body, outside your mind.</p>`,
+    link: 'https://www.notion.so/303d81dbbe83803f9f38d19c846ce42c'
+  },
+  heart: {
+    emoji: '❤️',
+    title: 'Heart',
+    sub: 'inner pillar · developed by Autumn',
+    body: `<p>Love before they deserve it. Curiosity about others — you already know everything you have to say.</p><p>Autumn raises the heart's ceiling by stripping the conditions you've placed on it. Peace is unconditional or it isn't peace.</p>`,
+    link: 'https://www.notion.so/303d81dbbe8380a09721d26e4d0c49aa'
+  },
+  spring: {
+    emoji: '🌱',
+    title: 'Spring',
+    sub: 'process · develops Mind',
+    body: `<p>No fixed "me" = anything is possible. Spring weaponizes that there's no real self and no objective truth — you can be anything, inhabit any costume.</p><p>It's a log of who you currently are, used to select the next character to play. The story defines the period. The plan reflects the man making it.</p><p>Stop when: you know what to do, why, when, and that it's possible.</p>`,
+    link: 'https://www.notion.so/303d81dbbe8380bdb9a8c1505fe90c1c'
+  },
+  summer: {
+    emoji: '☀️',
+    title: 'Summer',
+    sub: 'process · develops Body',
+    body: `<p>Embodied play. Work as a game with tight feedback loops — do a little, get a little, expand concentrically.</p><p>There's nowhere to get to. The outcome is a distraction. The process is what you'll experience 95% of the time — so enjoy it for 95% of it.</p><p>"We don't pick the ballroom, we just dance."</p>`,
+    link: 'https://www.notion.so/303d81dbbe83803f9f38d19c846ce42c'
+  },
+  autumn: {
+    emoji: '🍁',
+    title: 'Autumn',
+    sub: 'process · develops Heart',
+    body: `<p>Revelation, not change. Autumn doesn't create what you are — it lets go of what you're not. Via negativa incarnate.</p><p>Strip "me" until "I" is visible underneath. Purge the conditions you've placed on peace. What still stands is powerful.</p><p>Stop when: the only thing you know is that you truly don't know.</p>`,
+    link: 'https://www.notion.so/303d81dbbe8380a09721d26e4d0c49aa'
+  }
+};
+
+function openPopup(key) {
+  const d = data[key];
+  document.getElementById('p-emoji').textContent = d.emoji;
+  document.getElementById('p-title').textContent = d.title;
+  document.getElementById('p-sub').textContent   = d.sub;
+  document.getElementById('p-body').innerHTML    = d.body;
+  document.getElementById('p-link').href         = d.link;
+  document.getElementById('overlay').classList.add('active');
+}
+
+function closePopup() {
+  document.getElementById('overlay').classList.remove('active');
+}
+
+function overlayClick(e) {
+  if (e.target === document.getElementById('overlay')) closePopup();
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
+</script>
 </body>
 </html>

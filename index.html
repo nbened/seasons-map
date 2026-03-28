@@ -15,86 +15,58 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
   }
   svg { width: min(680px, 100vw); height: auto; }
-  .wedge { cursor: pointer; }
-  .wedge .bg { transition: opacity 0.15s; }
-  .wedge:hover .bg { opacity: 1 !important; }
-  .center-btn { cursor: pointer; }
-  .center-btn .cbg { transition: opacity 0.15s; }
-  .center-btn:hover .cbg { opacity: 0.7 !important; }
 
-  .overlay {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.2);
-    z-index: 10;
-    align-items: center;
-    justify-content: center;
+  .wedge { cursor: pointer; }
+  .wedge .bg {
+    transition: fill 0.15s, opacity 0.15s;
+    fill: #b0ada8;
+    opacity: 0.2;
   }
-  .overlay.active { display: flex; }
-  .popup {
-    background: #fff;
-    border-radius: 16px;
-    padding: 28px 30px 24px;
-    max-width: 360px;
-    width: 90%;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.13);
-    position: relative;
+  .wedge:hover .bg { opacity: 0.45; }
+  .wedge.done .bg { opacity: 0.75; }
+
+  .center-btn { cursor: pointer; }
+  .center-btn .cbg {
+    transition: fill 0.15s, opacity 0.15s;
+    fill: #b0ada8;
+    opacity: 0.4;
   }
-  .popup-title { font-size: 19px; font-weight: 700; color: #1a1a18; margin-bottom: 14px; }
-  .popup-bullets { list-style: none; margin-bottom: 22px; }
-  .popup-bullets li {
-    font-size: 13.5px; color: #3d3d3a; line-height: 1.6;
-    padding-left: 14px; position: relative; margin-bottom: 6px;
-  }
-  .popup-bullets li::before { content: '–'; position: absolute; left: 0; color: #b0ada8; }
-  .notion-btn {
-    display: inline-block; background: #1a1a18; color: #fff;
-    font-size: 13px; font-weight: 500; padding: 9px 16px;
-    border-radius: 8px; text-decoration: none; transition: background 0.15s;
-    cursor: pointer; border: none;
-  }
-  .notion-btn:hover { background: #444; }
-  .close-btn {
-    position: absolute; top: 13px; right: 15px;
-    background: none; border: none; font-size: 18px;
-    color: #b0ada8; cursor: pointer; line-height: 1; padding: 4px;
-  }
-  .close-btn:hover { color: #1a1a18; }
+  .center-btn:hover .cbg { opacity: 0.7; }
+  .center-btn.done .cbg { fill: #93c5fd; opacity: 1; }
 </style>
 </head>
 <body>
 
-<svg viewBox="0 0 680 660" xmlns="http://www.w3.org/2000/svg"
+<svg id="map" viewBox="0 0 680 660" xmlns="http://www.w3.org/2000/svg"
      style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
 
   <!-- OUTER SEASON WEDGES -->
-  <g class="wedge" onclick="openPopup('spring')">
-    <path class="bg" d="M340,340 L340,120 A220,220 0 0,1 530.5,450 Z" fill="#c6e8b0" opacity="0.55"/>
+  <g class="wedge" id="w-spring" onclick="handleClick('spring')">
+    <path class="bg" d="M340,340 L340,120 A220,220 0 0,1 530.5,450 Z" data-color="#c6e8b0"/>
   </g>
-  <g class="wedge" onclick="openPopup('summer')">
-    <path class="bg" d="M340,340 L530.5,450 A220,220 0 0,1 149.5,450 Z" fill="#f5d98a" opacity="0.5"/>
+  <g class="wedge" id="w-summer" onclick="handleClick('summer')">
+    <path class="bg" d="M340,340 L530.5,450 A220,220 0 0,1 149.5,450 Z" data-color="#f5d98a"/>
   </g>
-  <g class="wedge" onclick="openPopup('autumn')">
-    <path class="bg" d="M340,340 L149.5,450 A220,220 0 0,1 340,120 Z" fill="#f0b89a" opacity="0.5"/>
+  <g class="wedge" id="w-autumn" onclick="handleClick('autumn')">
+    <path class="bg" d="M340,340 L149.5,450 A220,220 0 0,1 340,120 Z" data-color="#f0b89a"/>
   </g>
 
   <circle cx="340" cy="340" r="220" fill="none" stroke="#c8c6be" stroke-width="0.8"/>
 
-  <!-- MID RING base fills -->
-  <path d="M340,340 L340,200 A140,140 0 0,1 461.2,410 Z" fill="#EAF3DE" opacity="0.55"/>
-  <path d="M340,340 L461.2,410 A140,140 0 0,1 218.8,410 Z" fill="#FAEEDA" opacity="0.5"/>
-  <path d="M340,340 L218.8,410 A140,140 0 0,1 340,200 Z" fill="#FAECE7" opacity="0.5"/>
+  <!-- MID RING subtle base -->
+  <path d="M340,340 L340,200 A140,140 0 0,1 461.2,410 Z" fill="#EAF3DE" opacity="0.3"/>
+  <path d="M340,340 L461.2,410 A140,140 0 0,1 218.8,410 Z" fill="#FAEEDA" opacity="0.3"/>
+  <path d="M340,340 L218.8,410 A140,140 0 0,1 340,200 Z" fill="#FAECE7" opacity="0.3"/>
 
   <!-- PILLAR WEDGES -->
-  <g class="wedge" onclick="openPopup('mind')">
-    <path class="bg" d="M340,278 A62,62 0 0,1 393.7,371 L461.2,410 A140,140 0 0,0 340,200 Z" fill="#a8d870" opacity="0"/>
+  <g class="wedge" id="w-mind" onclick="handleClick('mind')">
+    <path class="bg" d="M340,278 A62,62 0 0,1 393.7,371 L461.2,410 A140,140 0 0,0 340,200 Z" data-color="#a8d870"/>
   </g>
-  <g class="wedge" onclick="openPopup('body')">
-    <path class="bg" d="M393.7,371 A62,62 0 0,1 286.3,371 L218.8,410 A140,140 0 0,0 461.2,410 Z" fill="#f0c850" opacity="0"/>
+  <g class="wedge" id="w-body" onclick="handleClick('body')">
+    <path class="bg" d="M393.7,371 A62,62 0 0,1 286.3,371 L218.8,410 A140,140 0 0,0 461.2,410 Z" data-color="#f0c850"/>
   </g>
-  <g class="wedge" onclick="openPopup('heart')">
-    <path class="bg" d="M286.3,371 A62,62 0 0,1 340,278 L340,200 A140,140 0 0,0 218.8,410 Z" fill="#e89878" opacity="0"/>
+  <g class="wedge" id="w-heart" onclick="handleClick('heart')">
+    <path class="bg" d="M286.3,371 A62,62 0 0,1 340,278 L340,200 A140,140 0 0,0 218.8,410 Z" data-color="#e89878"/>
   </g>
 
   <circle cx="340" cy="340" r="140" fill="none" stroke="#c8c6be" stroke-width="0.8"/>
@@ -104,10 +76,11 @@
   <line x1="393.7" y1="371" x2="530.5" y2="450" stroke="#c8c6be" stroke-width="0.8"/>
   <line x1="286.3" y1="371" x2="149.5" y2="450" stroke="#c8c6be" stroke-width="0.8"/>
 
-  <!-- Blue center -->
-  <circle cx="340" cy="340" r="62" fill="#dbeafe" stroke="#93c5fd" stroke-width="0.8"/>
-  <g class="center-btn" onclick="openPopup('spirituality')">
-    <circle class="cbg" cx="340" cy="340" r="62" fill="#93c5fd" opacity="0"/>
+  <!-- Blue center base -->
+  <circle cx="340" cy="340" r="62" fill="#e8f0fe" stroke="#c8c6be" stroke-width="0.8"/>
+
+  <g class="center-btn" id="w-spirituality" onclick="handleClick('spirituality')">
+    <circle class="cbg" cx="340" cy="340" r="62"/>
     <text font-size="12" font-weight="600" fill="#1e3a5f"
           x="340" y="344" text-anchor="middle" style="pointer-events:none">Spirituality</text>
   </g>
@@ -148,121 +121,75 @@
 
 </svg>
 
-<!-- Popup -->
-<div class="overlay" id="overlay" onclick="overlayClick(event)">
-  <div class="popup">
-    <button class="close-btn" onclick="closePopup()">✕</button>
-    <div class="popup-title" id="p-title"></div>
-    <ul class="popup-bullets" id="p-bullets"></ul>
-    <button class="notion-btn" id="p-btn" onclick="goToPage()">Open page</button>
-  </div>
-</div>
-
 <script>
-const WINTER = 'https://www.notion.so/303d81dbbe8380f1a2b5f1258c2c0c08';
-const SPRING = 'https://www.notion.so/303d81dbbe8380bdb9a8c1505fe90c1c';
-const SUMMER = 'https://www.notion.so/303d81dbbe83803f9f38d19c846ce42c';
-const AUTUMN = 'https://www.notion.so/303d81dbbe8380a09721d26e4d0c49aa';
+// const WINTER = 'https://www.notion.so/303d81dbbe8380f1a2b5f1258c2c0c08';
+// const SPRING = 'https://www.notion.so/303d81dbbe8380bdb9a8c1505fe90c1c';
+// const SUMMER = 'https://www.notion.so/303d81dbbe83803f9f38d19c846ce42c';
+// const AUTUMN = 'https://www.notion.so/303d81dbbe8380a09721d26e4d0c49aa';
 
-const data = {
-  spirituality: {
-    title: 'Spirituality',
-    bullets: [
-      '"I" having to play with no rules',
-      'The humor in that is the foundation',
-      'Heart, Mind, Body are "me" playing dress-up — Spirituality is "I" watching',
-      'Seek state change, not milestones',
-      'The world is rich and active'
-    ],
-    link: WINTER
-  },
-  mind: {
-    title: '🧠 Mind',
-    bullets: [
-      'Joy of youth, wander, heuristic',
-      'Ceiling raised by Spring — new costumes, new frames',
-      'Hold loosely, wander freely',
-      'Shoot at goals you find interesting right now'
-    ],
-    link: WINTER
-  },
-  body: {
-    title: '⚡ Body',
-    bullets: [
-      'Not something to get through — something to experience',
-      'Seek state transitions, not endpoints',
-      'The champion monitors and extracts what\'s still left to give',
-      'Nowhere to get to — practice being in your body, outside your mind'
-    ],
-    link: WINTER
-  },
-  heart: {
-    title: '❤️ Heart',
-    bullets: [
-      'Love before they deserve it',
-      'Curiosity about others — you already know everything you have to say',
-      'Autumn strips the conditions placed on it',
-      'Peace is unconditional or it isn\'t peace'
-    ],
-    link: WINTER
-  },
-  spring: {
-    title: '🌱 Spring',
-    bullets: [
-      'No fixed "me" = anything is possible',
-      'Weaponizes the absence of objective truth',
-      'A log of who you currently are',
-      'Used to select the next costume to inhabit',
-      'The story defines the period — the plan reflects the man making it'
-    ],
-    link: SPRING
-  },
-  summer: {
-    title: '☀️ Summer',
-    bullets: [
-      'Embodied play — work as a game',
-      'Tight feedback loops: do a little, get a little',
-      'There\'s nowhere to get to — the outcome is a distraction',
-      '"We don\'t pick the ballroom, we just dance"'
-    ],
-    link: SUMMER
-  },
-  autumn: {
-    title: '🍁 Autumn',
-    bullets: [
-      'Revelation, not change',
-      'Doesn\'t create what you are — lets go of what you\'re not',
-      'Strip "me" until "I" is visible underneath',
-      'Purge conditions placed on peace',
-      'What still stands is powerful'
-    ],
-    link: AUTUMN
+const SECTIONS = ['spring','summer','autumn','mind','body','heart','spirituality'];
+const STORE_KEY = 'seasons_clicked';
+const DATE_KEY  = 'seasons_date';
+
+function todayPST() {
+  return new Date().toLocaleDateString('en-CA', { timeZone: 'America/Los_Angeles' });
+}
+
+function loadState() {
+  const storedDate = localStorage.getItem(DATE_KEY);
+  const today = todayPST();
+  if (storedDate !== today) {
+    localStorage.setItem(DATE_KEY, today);
+    localStorage.setItem(STORE_KEY, JSON.stringify({}));
+    return {};
   }
-};
-
-let currentLink = '';
-
-function openPopup(key) {
-  const d = data[key];
-  currentLink = d.link;
-  document.getElementById('p-title').textContent = d.title;
-  document.getElementById('p-bullets').innerHTML = d.bullets.map(b => `<li>${b}</li>`).join('');
-  document.getElementById('overlay').classList.add('active');
+  try { return JSON.parse(localStorage.getItem(STORE_KEY)) || {}; }
+  catch(e) { return {}; }
 }
 
-function goToPage() {
-  window.open(currentLink, '_blank');
+function saveState(state) {
+  localStorage.setItem(STORE_KEY, JSON.stringify(state));
 }
 
-function closePopup() {
-  document.getElementById('overlay').classList.remove('active');
+function applyState(state) {
+  SECTIONS.forEach(key => {
+    const el = document.getElementById('w-' + key);
+    if (!el) return;
+    const bg = el.querySelector('.bg, .cbg');
+    if (state[key]) {
+      el.classList.add('done');
+      if (bg) {
+        const color = bg.dataset.color;
+        if (color) bg.style.fill = color;
+        bg.style.opacity = '0.75';
+      }
+    } else {
+      el.classList.remove('done');
+      if (bg) {
+        bg.style.fill = '';
+        bg.style.opacity = '';
+      }
+    }
+  });
 }
 
-function overlayClick(e) {
-  if (e.target === document.getElementById('overlay')) closePopup();
+function handleClick(key) {
+  const state = loadState();
+  // Toggle: if already done, unmark it; otherwise mark it
+  state[key] = !state[key];
+  saveState(state);
+  applyState(state);
+  // window.open(url, '_blank'); // disabled for now
 }
 
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closePopup(); });
+// Init
+applyState(loadState());
+
+// Midnight PST reset check
+setInterval(() => {
+  const stored = localStorage.getItem(DATE_KEY);
+  if (stored !== todayPST()) applyState(loadState());
+}, 60000);
 </script>
 </body>
 </html>

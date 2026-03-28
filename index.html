@@ -17,21 +17,22 @@
   svg { width: min(680px, 100vw); height: auto; }
 
   .wedge { cursor: pointer; }
-  .wedge .bg {
+  .wedge .hit { fill: transparent; }
+  .wedge .color {
     transition: fill 0.15s, opacity 0.15s;
-    fill: #b0ada8;
-    opacity: 0.2;
+    fill: transparent;
+    opacity: 0;
   }
-  .wedge:hover .bg { opacity: 0.45; }
-  .wedge.done .bg { opacity: 0.75; }
+  .wedge:hover .color { fill: #b0ada8; opacity: 0.3; }
+  .wedge.done .color { opacity: 1; }
 
   .center-btn { cursor: pointer; }
   .center-btn .cbg {
     transition: fill 0.15s, opacity 0.15s;
     fill: #b0ada8;
-    opacity: 0.4;
+    opacity: 0;
   }
-  .center-btn:hover .cbg { opacity: 0.7; }
+  .center-btn:hover .cbg { opacity: 0.3; }
   .center-btn.done .cbg { fill: #93c5fd; opacity: 1; }
 </style>
 </head>
@@ -40,33 +41,44 @@
 <svg id="map" viewBox="0 0 680 660" xmlns="http://www.w3.org/2000/svg"
      style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;">
 
-  <!-- OUTER SEASON WEDGES -->
+  <!-- OUTER SEASON WEDGES — static soft fill always visible -->
+  <path d="M340,340 L340,120 A220,220 0 0,1 530.5,450 Z" fill="#c6e8b0" opacity="0.45"/>
+  <path d="M340,340 L530.5,450 A220,220 0 0,1 149.5,450 Z" fill="#f5d98a" opacity="0.4"/>
+  <path d="M340,340 L149.5,450 A220,220 0 0,1 340,120 Z" fill="#f0b89a" opacity="0.4"/>
+
+  <!-- CLICKABLE outer wedge overlays -->
   <g class="wedge" id="w-spring" onclick="handleClick('spring')">
-    <path class="bg" d="M340,340 L340,120 A220,220 0 0,1 530.5,450 Z" data-color="#c6e8b0"/>
+    <path class="hit" d="M340,340 L340,120 A220,220 0 0,1 530.5,450 Z"/>
+    <path class="color" d="M340,340 L340,120 A220,220 0 0,1 530.5,450 Z" data-color="#7bc860"/>
   </g>
   <g class="wedge" id="w-summer" onclick="handleClick('summer')">
-    <path class="bg" d="M340,340 L530.5,450 A220,220 0 0,1 149.5,450 Z" data-color="#f5d98a"/>
+    <path class="hit" d="M340,340 L530.5,450 A220,220 0 0,1 149.5,450 Z"/>
+    <path class="color" d="M340,340 L530.5,450 A220,220 0 0,1 149.5,450 Z" data-color="#e8b830"/>
   </g>
   <g class="wedge" id="w-autumn" onclick="handleClick('autumn')">
-    <path class="bg" d="M340,340 L149.5,450 A220,220 0 0,1 340,120 Z" data-color="#f0b89a"/>
+    <path class="hit" d="M340,340 L149.5,450 A220,220 0 0,1 340,120 Z"/>
+    <path class="color" d="M340,340 L149.5,450 A220,220 0 0,1 340,120 Z" data-color="#d87848"/>
   </g>
 
   <circle cx="340" cy="340" r="220" fill="none" stroke="#c8c6be" stroke-width="0.8"/>
 
-  <!-- MID RING subtle base -->
-  <path d="M340,340 L340,200 A140,140 0 0,1 461.2,410 Z" fill="#EAF3DE" opacity="0.3"/>
-  <path d="M340,340 L461.2,410 A140,140 0 0,1 218.8,410 Z" fill="#FAEEDA" opacity="0.3"/>
-  <path d="M340,340 L218.8,410 A140,140 0 0,1 340,200 Z" fill="#FAECE7" opacity="0.3"/>
+  <!-- MID RING — solid gray background to block outer sector bleed -->
+  <path d="M340,340 L340,200 A140,140 0 0,1 461.2,410 Z" fill="#f0ede8"/>
+  <path d="M340,340 L461.2,410 A140,140 0 0,1 218.8,410 Z" fill="#f0ede8"/>
+  <path d="M340,340 L218.8,410 A140,140 0 0,1 340,200 Z" fill="#f0ede8"/>
 
-  <!-- PILLAR WEDGES -->
+  <!-- CLICKABLE pillar wedge overlays -->
   <g class="wedge" id="w-mind" onclick="handleClick('mind')">
-    <path class="bg" d="M340,278 A62,62 0 0,1 393.7,371 L461.2,410 A140,140 0 0,0 340,200 Z" data-color="#a8d870"/>
+    <path class="hit"   d="M340,278 A62,62 0 0,1 393.7,371 L461.2,410 A140,140 0 0,0 340,200 Z"/>
+    <path class="color" d="M340,278 A62,62 0 0,1 393.7,371 L461.2,410 A140,140 0 0,0 340,200 Z" data-color="#a8d870"/>
   </g>
   <g class="wedge" id="w-body" onclick="handleClick('body')">
-    <path class="bg" d="M393.7,371 A62,62 0 0,1 286.3,371 L218.8,410 A140,140 0 0,0 461.2,410 Z" data-color="#f0c850"/>
+    <path class="hit"   d="M393.7,371 A62,62 0 0,1 286.3,371 L218.8,410 A140,140 0 0,0 461.2,410 Z"/>
+    <path class="color" d="M393.7,371 A62,62 0 0,1 286.3,371 L218.8,410 A140,140 0 0,0 461.2,410 Z" data-color="#f0c850"/>
   </g>
   <g class="wedge" id="w-heart" onclick="handleClick('heart')">
-    <path class="bg" d="M286.3,371 A62,62 0 0,1 340,278 L340,200 A140,140 0 0,0 218.8,410 Z" data-color="#e89878"/>
+    <path class="hit"   d="M286.3,371 A62,62 0 0,1 340,278 L340,200 A140,140 0 0,0 218.8,410 Z"/>
+    <path class="color" d="M286.3,371 A62,62 0 0,1 340,278 L340,200 A140,140 0 0,0 218.8,410 Z" data-color="#e89878"/>
   </g>
 
   <circle cx="340" cy="340" r="140" fill="none" stroke="#c8c6be" stroke-width="0.8"/>
@@ -155,19 +167,18 @@ function applyState(state) {
   SECTIONS.forEach(key => {
     const el = document.getElementById('w-' + key);
     if (!el) return;
-    const bg = el.querySelector('.bg, .cbg');
+    const colorEl = el.querySelector('.color, .cbg');
     if (state[key]) {
       el.classList.add('done');
-      if (bg) {
-        const color = bg.dataset.color;
-        if (color) bg.style.fill = color;
-        bg.style.opacity = '0.75';
+      if (colorEl && colorEl.dataset.color) {
+        colorEl.style.fill = colorEl.dataset.color;
+        colorEl.style.opacity = '0.85';
       }
     } else {
       el.classList.remove('done');
-      if (bg) {
-        bg.style.fill = '';
-        bg.style.opacity = '';
+      if (colorEl) {
+        colorEl.style.fill = '';
+        colorEl.style.opacity = '';
       }
     }
   });
@@ -175,20 +186,16 @@ function applyState(state) {
 
 function handleClick(key) {
   const state = loadState();
-  // Toggle: if already done, unmark it; otherwise mark it
   state[key] = !state[key];
   saveState(state);
   applyState(state);
   // window.open(url, '_blank'); // disabled for now
 }
 
-// Init
 applyState(loadState());
 
-// Midnight PST reset check
 setInterval(() => {
-  const stored = localStorage.getItem(DATE_KEY);
-  if (stored !== todayPST()) applyState(loadState());
+  if (localStorage.getItem(DATE_KEY) !== todayPST()) applyState(loadState());
 }, 60000);
 </script>
 </body>

@@ -47,17 +47,20 @@
   <path d="M340,340 L149.5,450 A220,220 0 0,1 340,120 Z" fill="#f0b89a" opacity="0"/>
 
   <!-- CLICKABLE outer wedge overlays -->
-  <g class="wedge" id="w-spring" onclick="handleClick('spring')">
+  <!-- Autumn: top-right wedge (above Mind) -->
+  <g class="wedge" id="w-autumn" onclick="handleClick('autumn')">
     <path class="hit" d="M340,340 L340,120 A220,220 0 0,1 530.5,450 Z"/>
-    <path class="color" d="M340,340 L340,120 A220,220 0 0,1 530.5,450 Z" data-color="#7bc860"/>
+    <path class="color" d="M340,340 L340,120 A220,220 0 0,1 530.5,450 Z" data-color="#d87848"/>
   </g>
+  <!-- Summer: bottom wedge -->
   <g class="wedge" id="w-summer" onclick="handleClick('summer')">
     <path class="hit" d="M340,340 L530.5,450 A220,220 0 0,1 149.5,450 Z"/>
     <path class="color" d="M340,340 L530.5,450 A220,220 0 0,1 149.5,450 Z" data-color="#e8b830"/>
   </g>
-  <g class="wedge" id="w-autumn" onclick="handleClick('autumn')">
+  <!-- Spring: top-left wedge (above Heart) -->
+  <g class="wedge" id="w-spring" onclick="handleClick('spring')">
     <path class="hit" d="M340,340 L149.5,450 A220,220 0 0,1 340,120 Z"/>
-    <path class="color" d="M340,340 L149.5,450 A220,220 0 0,1 340,120 Z" data-color="#d87848"/>
+    <path class="color" d="M340,340 L149.5,450 A220,220 0 0,1 340,120 Z" data-color="#7bc860"/>
   </g>
 
   <circle cx="340" cy="340" r="220" fill="none" stroke="#c8c6be" stroke-width="0.8"/>
@@ -122,14 +125,17 @@
   <text font-size="10" font-weight="500" fill="#c0532e" x="249" y="299" text-anchor="middle" style="pointer-events:none">love</text>
 
   <!-- SEASON LABELS -->
-  <text font-size="13" font-weight="600" fill="#3B6D11" x="492" y="253" text-anchor="middle" style="pointer-events:none">🌱 Spring</text>
-  <text font-size="10" font-weight="500" fill="#6b9e3a" x="492" y="268" text-anchor="middle" style="pointer-events:none">create</text>
+  <!-- Autumn: top-right, above Mind -->
+  <text font-size="13" font-weight="600" fill="#993C1D" x="492" y="253" text-anchor="middle" style="pointer-events:none">🍁 Autumn</text>
+  <text font-size="10" font-weight="500" fill="#c0532e" x="492" y="268" text-anchor="middle" style="pointer-events:none">let go</text>
 
+  <!-- Summer: bottom -->
   <text font-size="13" font-weight="600" fill="#BA7517" x="340" y="502" text-anchor="middle" style="pointer-events:none">☀️ Summer</text>
   <text font-size="10" font-weight="500" fill="#d4922a" x="340" y="517" text-anchor="middle" style="pointer-events:none">play</text>
 
-  <text font-size="13" font-weight="600" fill="#993C1D" x="188" y="253" text-anchor="middle" style="pointer-events:none">🍁 Autumn</text>
-  <text font-size="10" font-weight="500" fill="#c0532e" x="188" y="268" text-anchor="middle" style="pointer-events:none">let go</text>
+  <!-- Spring: top-left, above Heart -->
+  <text font-size="13" font-weight="600" fill="#3B6D11" x="188" y="253" text-anchor="middle" style="pointer-events:none">🌱 Spring</text>
+  <text font-size="10" font-weight="500" fill="#6b9e3a" x="188" y="268" text-anchor="middle" style="pointer-events:none">create</text>
 
 </svg>
 
@@ -189,7 +195,6 @@ function handleClick(key) {
   state[key] = !state[key];
   saveState(state);
   applyState(state);
-  // window.open(url, '_blank'); // disabled for now
 }
 
 applyState(loadState());
